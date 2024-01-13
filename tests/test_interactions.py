@@ -1,4 +1,4 @@
-from pages.interactions_page import SortablePage, SelectablePage
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
 from conftest import driver
 
 class TestInteractions:
@@ -22,3 +22,14 @@ class TestInteractions:
             item_grid = selectable_page.select_grid_item()
             assert len(item_list) > 0, 'no elements were selected'
             assert len(item_grid) > 0, 'no elements were selected'
+
+    class TestResizablePage:
+
+        def test_resizable(self, driver):
+            resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
+            resizable_page.open()
+            max_box, min_box = resizable_page.change_size_resizable_box()
+            max_resize, min_resize = resizable_page.change_size_resizable()
+            assert max_box <= ('500px', '300px'), 'maximun size not equal to "500px", "300px"'
+            assert min_box >= ('150px', '150px'), 'maximun size not equal to "150px", "150px"'
+            assert min_resize != max_resize, 'resizable has not been changed'
